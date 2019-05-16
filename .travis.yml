@@ -1,0 +1,24 @@
+os: linux
+dist: xenial
+language: python
+
+matrix:
+  include:
+    - python: "3.5"
+      name: "3.5 Vanilla"
+    - python: "3.6"
+      name: "3.6 Vanilla"
+    - python: "nightly"
+      name: "Nightly Test"
+  allow_failures:
+    - python: "nightly"
+
+install:
+  - pip install -r requirements.txt
+  - pip install pytest-cov
+
+script:
+  - python -m pytest --cov=./ tests/
+
+after_success:
+  - codecov

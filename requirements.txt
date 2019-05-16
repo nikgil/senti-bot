@@ -5,3 +5,8 @@ discord==0.0.2
 discord.py==0.16.12
 python-dotenv==0.8.2
 psycopg2
+pandas
+scikit-learn
+nltk
+pytest
+numpy
