@@ -1,21 +1,23 @@
 from abc import ABC, abstractmethod
-from typing import Dict
+from pandas import DataFrame
 
 
-def AbstractKernel(ABC):
+class AbstractKernel(ABC):
     @abstractmethod
-    def train(train_set: Dict[str, str]) -> None:
+    def train(self, train_set: DataFrame, force: bool = False) -> None:
         """
         Method called at start to train kernel.
         Note: the provided training set is provided as is, with no filtering of special characters or stop words.
 
         :param train_set: Key-Value pair of messages with associated tag for training
+        :param force: If True then training will create a new classifier overriding an existing one. False will only execute if no pretrained classifier found
+
         :return: Nothing
         """
         pass
 
     @abstractmethod
-    def is_banned(message: str, threshold: float = 0.5) -> bool:
+    def is_banned(self, message: str, threshold: float = 0.5) -> bool:
         """
         Returns true if a provided message is bad/should be acted on by the bot.
 
@@ -24,4 +26,4 @@ def AbstractKernel(ABC):
         :return: true if message is banned, false if passes test
         """
         assert 0.0 <= threshold <= 1.0
-        pass
+        return False

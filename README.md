@@ -34,3 +34,6 @@ Senti-Bot
 
 ## Usage
 TODO: not yet available
+
+## Credits
+Linear SVC, Logisitc Regression, and Naive Bayes taken from [Susan Li](https://github.com/susanli2016/Machine-Learning-with-Python/blob/master/Multi%20label%20text%20classification.ipynb).

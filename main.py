@@ -1,6 +1,5 @@
 import os
 import discord
-import asyncio
 
 from discord import Game
 from dotenv import load_dotenv
@@ -8,7 +7,7 @@ from os.path import join, dirname
 from discord.ext.commands import Bot
 
 # This is from rolley
-from kernels.kernel import AbstractKernel
+from kernels.linear_svc import LinearSVC
 
 PREFIX = '?'
 
@@ -18,8 +17,7 @@ load_dotenv(dotenv_path)
 TOKEN = os.environ.get('TOKEN')
 bot = Bot(command_prefix=PREFIX)
 
-# Kernel TODO: this will break right now
-kernel: AbstractKernel = AbstractKernel()
+kernel: LinearSVC = LinearSVC()
 
 
 # Bot Events
@@ -38,7 +36,7 @@ async def on_message(message):
         # Ignore bots
         return
 
-    if not message.channel.is_private:
+    if message.channel.is_private:
         # TODO: private channel is where training is
         return
 
@@ -46,16 +44,19 @@ async def on_message(message):
     # TODO: filter message here using algorithm
     await bot.process_commands(message)
 
+    if kernel.is_banned(message.content):
+        await bot.delete_message(message)
+
 
 # Bot Commands
 @bot.command(name='test_msg', description='Test a message to see if it is legal in chat', aliases=['test'],
              brief='test a message',
              pass_context=True)
 async def test_msg(ctx):
-    if len(ctx.message) == 0:
+    if len(ctx.message.content) == 0:
         await bot.send_message(ctx.message.channel, content='Please supply an actual message...')
 
-    msg = ctx.message + "\n\n"
+    msg = ctx.message.content + "\n\n"
     color = 0x00FF00
 
     if kernel.is_banned(msg):
