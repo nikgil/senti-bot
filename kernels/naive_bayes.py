@@ -1,54 +1,36 @@
-import re
+import utils
 import pandas as pd
+from sklearn.externals import joblib
+
 from kernels.kernel import AbstractKernel
 from nltk.corpus import stopwords
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from sklearn.multiclass import OneVsRestClassifier
 
 
 class NaiveBayes(AbstractKernel):
 
     def __init__(self):
-        stop_words = set(stopwords.words('english'))
+        self.stop_words = set(stopwords.words('english'))
+        self.NB_pipeline = utils.load_from_file("nb_pipeline.pkl")
+
+    def train(self, train_set: pd.DataFrame, force: bool = False, save: bool = True) -> None:
+        if not force and self.NB_pipeline is not None:
+            return
+
         self.NB_pipeline = Pipeline([
-            ('tfidf', TfidfVectorizer(stop_words=stop_words)),
-            ('clf', OneVsRestClassifier(MultinomialNB(
-                fit_prior=True, class_prior=None))),
+            ('tfidf', TfidfVectorizer(stop_words=self.stop_words)),
+            ('clf', MultinomialNB()),
         ])
 
-        self.categories = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+        self.NB_pipeline.fit(train_set['comment_text'].map(lambda com: utils.preprocess_text(com)),
+                             train_set['bannable'])
 
-    def train(self, train_set: pd.DataFrame) -> None:
-        for category in self.categories:
-            self.NB_pipeline.train(train_set['comment_text'], train_set[category])
+        if save:
+            utils.dump(self.NB_pipeline, "nb_pipeline.pkl")
 
     def is_banned(self, message: str, threshold: float = 0.5) -> bool:
-        prediction = self.NB_pipeline.predict(message)
+        prediction = self.NB_pipeline.predict_proba([utils.preprocess_text(message)])[0]
 
-        for category in self.categories:
-            if prediction[category] == 1:
-                return True
-
-        return False
-
-    # shamelessly stolen from
-    # https://github.com/susanli2016/Machine-Learning-with-Python/blob/master/Multi%20label%20text%20classification.ipynb
-    def preprocess_text(self, text):
-        text = text.lower()
-        text = re.sub(r"what's", "what is ", text)
-        text = re.sub(r"\'s", " ", text)
-        text = re.sub(r"\'ve", " have ", text)
-        text = re.sub(r"can't", "can not ", text)
-        text = re.sub(r"n't", " not ", text)
-        text = re.sub(r"i'm", "i am ", text)
-        text = re.sub(r"\'re", " are ", text)
-        text = re.sub(r"\'d", " would ", text)
-        text = re.sub(r"\'ll", " will ", text)
-        text = re.sub(r"\'scuse", " excuse ", text)
-        text = re.sub('\W', ' ', text)
-        text = re.sub('\s+', ' ', text)
-        text = text.strip(' ')
-
-        return text
+        return prediction[1] > prediction[0] and prediction[1] > threshold

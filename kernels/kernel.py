@@ -1,14 +1,17 @@
 from abc import ABC, abstractmethod
 from pandas import DataFrame
 
+
 class AbstractKernel(ABC):
     @abstractmethod
-    def train(self, train_set: DataFrame) -> None:
+    def train(self, train_set: DataFrame, force: bool = False) -> None:
         """
         Method called at start to train kernel.
         Note: the provided training set is provided as is, with no filtering of special characters or stop words.
 
         :param train_set: Key-Value pair of messages with associated tag for training
+        :param force: If True then training will create a new classifier overriding an existing one. False will only execute if no pretrained classifier found
+
         :return: Nothing
         """
         pass
@@ -23,4 +26,4 @@ class AbstractKernel(ABC):
         :return: true if message is banned, false if passes test
         """
         assert 0.0 <= threshold <= 1.0
-        pass
+        return False
