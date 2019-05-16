@@ -15,7 +15,7 @@ MIN_ACCURACY = 0.9
 @pytest.fixture()
 def get_nb():
     nb = naive_bayes.NaiveBayes()
-    nb.train(train)
+    nb.train(train, force=True, save=False)
 
     yield nb, test
 
@@ -23,7 +23,7 @@ def get_nb():
 @pytest.fixture()
 def get_lsvc():
     lsvc = linear_svc.LinearSVC()
-    lsvc.train(train)
+    lsvc.train(train, force=True, save=False)
 
     yield lsvc, test
 
@@ -31,7 +31,7 @@ def get_lsvc():
 @pytest.fixture()
 def get_logreg():
     log = log_regression.LogRegression()
-    log.train(train)
+    log.train(train, force=True, save=False)
 
     yield log, test
 
