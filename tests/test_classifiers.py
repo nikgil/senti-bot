@@ -1,37 +1,62 @@
 import nltk
 import pytest
 import pandas as pd
-import numpy as np
-from kernels import naive_bayes
+from kernels import linear_svc, log_regression, naive_bayes
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
+nltk.download('stopwords')
+df = pd.read_csv("training_files/train.csv", encoding="ISO-8859-1")
+train, test = train_test_split(df, test_size=0.33, shuffle=True)
+
+MIN_ACCURACY = 0.9
+
 
 @pytest.fixture()
-def resource():
-    nltk.download('stopwords')
-    df = pd.read_csv("training_files/train.csv", encoding="ISO-8859-1")
-    train, test = train_test_split(df, test_size=0.33)
-
+def get_nb():
     nb = naive_bayes.NaiveBayes()
     nb.train(train)
 
     yield nb, test
 
 
-class TestClassifiers(object):
-    def test_accuracy(self, resource):
-        classifier = resource[0]
-        test_set = resource[1]
+@pytest.fixture()
+def get_lsvc():
+    lsvc = linear_svc.LinearSVC()
+    lsvc.train(train)
 
-        categories = ['toxic', 'severe_toxic', 'obscene', 'threat', 'insult', 'identity_hate']
+    yield lsvc, test
+
+
+@pytest.fixture()
+def get_logreg():
+    log = log_regression.LogRegression()
+    log.train(train)
+
+    yield log, test
+
+
+class TestClassifiers(object):
+    def test_nb(self, get_nb):
+        classifier = get_nb[0]
+        test_set = get_nb[1]
 
         classed = [classifier.is_banned(comment) for comment in test_set["comment_text"]]
 
-        for category in categories:
-            assert accuracy_score([x != 0 for x in test_set[category]], classed) > 0.9
+        assert accuracy_score(test_set['bannable'], classed) > MIN_ACCURACY
 
-        assert 1 == 0
-        # for category in categories:
-        #     print(test_set[category])
-        #     assert accuracy_score(test_set[category], classed) > 0.99
+    def test_svc(self, get_lsvc):
+        classifier = get_lsvc[0]
+        test_set = get_lsvc[1]
+
+        classed = [classifier.is_banned(comment) for comment in test_set["comment_text"]]
+
+        assert accuracy_score(test_set['bannable'], classed) > MIN_ACCURACY
+
+    def test_logreg(self, get_logreg):
+        classifier = get_logreg[0]
+        test_set = get_logreg[1]
+
+        classed = [classifier.is_banned(comment) for comment in test_set["comment_text"]]
+
+        assert accuracy_score(test_set['bannable'], classed) > MIN_ACCURACY
