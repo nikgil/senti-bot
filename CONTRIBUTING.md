@@ -18,6 +18,7 @@ By contributing to the project you agree to abide by it.
 - Any new kernels created should extend the class `kernels.kernel.AbstractKernel`.
 - Create applicable tests for new methods as needed. All non-bot methods (so anything outside of `main.py`) should be tested. Discord bot related commands are difficult to test hence are not mandatory to be unit tested _but_ should be tested manually by code-author.
 - Create a pull request citing issue that is fixed. All code must be up to date with the `master` branch at the time of submitting the request.
+- All requests should address a given issue on the [tracker](https://github.com/nikmanG/senti-bot/issues). If one does not (for example adding a new kernel that is not specified), then create a new issue and submit a PR citing it.
 
 
 ## Code of Conduct
