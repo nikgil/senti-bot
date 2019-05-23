@@ -1,5 +1,6 @@
 import os
 import discord
+import sys
 
 from discord import Game
 from dotenv import load_dotenv
@@ -11,10 +12,6 @@ from kernels.linear_svc import LinearSVC
 
 PREFIX = '?'
 
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-
-TOKEN = os.environ.get('TOKEN')
 bot = Bot(command_prefix=PREFIX)
 
 kernel: LinearSVC = LinearSVC()
@@ -74,4 +71,12 @@ def get_embed(content, color=0xffd700):
 
 
 if __name__ == '__main__':
+    if len(sys.argv) > 1:
+        TOKEN = sys.argv[1]
+    else:
+        dotenv_path = join(dirname(__file__), '.env')
+        load_dotenv(dotenv_path)
+
+        TOKEN = os.environ.get('TOKEN')
+
     bot.run(TOKEN)

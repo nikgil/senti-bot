@@ -22,7 +22,7 @@ jobs:
   - stage: build docker image
     script:
     - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
-    - docker build -t $IMAGE_NAME .
+    - docker build -f dockerfiles/Dockerfile.prod -t $IMAGE_NAME .
     - docker push $IMAGE_NAME:$VERSION
     - docker images
 install:

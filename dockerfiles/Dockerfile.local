@@ -8,13 +8,15 @@ LABEL mainainer="ngilevskiy@gmail.com"
 COPY . /senti-bot
 WORKDIR /senti-bot
 
-COPY .env .
-
 # install all reqs for script
 RUN pip install -r requirements.txt
 RUN python pickle_files.py
 
 ARG ENV_KEY
 
+# create environment and set build argument env key
+RUN touch .env
+RUN echo "$ENV_KEY" >> .env
+
 # Finally run the actual target command
-CMD ["python", "main.py", "$ENV_KEY"]
+CMD ["python", "main.py"]
