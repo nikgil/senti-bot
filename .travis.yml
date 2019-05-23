@@ -1,34 +1,29 @@
 os: linux
 dist: xenial
 language: python
-
 python:
 - '3.5'
 - '3.6'
 - 3.6-dev
 - 3.7-dev
 - nightly
-
 env:
   global:
-  - secure: GA9YH/PUVsSxT+yazDA80wkDyoIyncOGjzeO6Q1B1oKp9FcKyXtVbvlE+YlZBPVZNKgClcaOdXD7o3Kdc4a7TPBfdu708jruVShOp0/0D2YF+gIaNsykRqVtoYQjduzKTwjPSFHYLwNHQ3E03miZrY3jm1R59zgw+sDbI70wgkDlWz02didXddYqAXRQRWPGItGFqbfoPIT6HRt2B8yWbDUsp2dOrW+ZpZlVzD94FeOKkdMyCiSaJva1N/2+JnPO4IHy6SW760tMlM3qQgJ947zHybR3InFcazyCpMlDxmiZd8XzdGn7TK9FW+KVG5H5QmqoILkPsmc2b3oC+QEdHDf+Ur3fAQvOVe2+MLuoFsY/V6UIRc6pqHxTsQOblBNL/awqFGMeGDMYFQd6qDEiX76vdpoze1hLfkvbr/KKl8sLBS3Xn3vqGtfuBYDZ/VRvRIUXfhtxCr2uEAKe4LwLB05CNhRbN4Dhqq1Tx+/wJdDQxwOKu6fpSW2xwosNFXSna1QczjRlec4F8wIzrw9eLyzoctFngIy6QOmxchw4f3Y97vjSRoSLxOXhxg3wt/IIJA7xvt4BHh14ROO/FjQaTiux+4G4V2TI9K/yHf6SzcfAFN6cI7HKpAkNjU8JbgDuk2bdMP45S7mTYHr8Nvi79UOIR02SzXu1nR8e+GvywRc=
-  - secure: svt5FjabVbmssEmLOBdD2aRrLCZG+jnwXBWyuDPqryqGCmR8mfesg4TofZycniJxdE1dj9I/X+f9smaBFYjtMd999bck2usbPD61MNbv4uGbN2JQ497WsTnyBhjogkVsViVKt+BzPjL3w8yn1RilpbADL8DOO6fl6bP/y0LRNFaKHepIxcSwPxxKNIOclVrc7zktQ7XRD2hv+dFRj+6msKMi4Fw9+xX9MjdPy5cYCQhR7LT7ILosUo/ybvH3YdLWqohU8Mdv4jHwVmZ1QSFIX3gjE81v5kWOkVd4NLm5cMzzNVvqPC49nj1YDGUVLN3R3imfv9E6F2yUNVuRFix2WZzSOZkQ4dEXx2e6PnfgA3F2/mzUK0y4YWcVo/UUlnKB+mw/af71WNrIzSHOmWGXxyxc+iaXWzGPHz1ukruBpxwfxPKtzIcs5L63K43tuShDEqHtp4//HXXXiUM7b4nWG6RMHoWYGsH3PQd5NRmr1GV3scTxdWHgZ+cFRw6tsSlivQcdw8INOyRUj5fom9+4NlXsKluIAHtLuCjRgWFmmLr4iYjdlBM9Lzd2IiAbBl+sA+dvm5AjF1p89f9BinL5Esns4AddxaCwPQn4hEyeF84HLTri79I7ZNpO8xsB3szCNlr8hs0jWjOvxpfLdQDg7WAnVVLOfPLarhQKV8YyMQs=
-
+  - IMAGE_NAME=nikmang/senti-bot
+  - VERSION=0.0.1
+  - secure: MxcSLzipZp7rfDdxkRVo/xF1f/a8U3huYnv6hILD5IULwYgHuY9nsQC2b0BxZemlcJhgof2F6JZjNwdR3ZZjUv6HgsPYVIwjS/YkWOLDTaILyXveVvZ3vfp9lFXdLLoJ9xJLHfEc2zw7xjWPDTgF6QbzSVTwffvs91CuebJ3gd7O90gKB9Uy5ECGD1HziyRF1dh0y9UFlrlhCvQs8SDt3ox52hPM30J2hpV5hUlBGeHKyEqNVp1ciTfml2KByg+F+aHvO0ViS/JBXOoZ+qL7hKW7qiiyjCSBDcJfSUTtQZNok4NX6Vm/aU3Y9Y4UvVqwifmYCeehuEHZsNMPzpb1mSR9GUikaCeZDrFq0nPenDkAIae1mroiSgL1J03e4f+wbdEKCvZ703HLInGuIBJjmtrVmwlbtip2vfkqixC/feJn9o5ZaMuJT5ji0Ubi4lZY/fMsqsRYLVXeipU7xex+5Dkma6KOYZluThNDU1OePD59JpObQ8GBAxZN2Vu6NKY5OFdFowD3RNr1cvUr4dbJ0kIF7kvKnyoHknKKO0uP2wmzZWoZ2tKHQWNztH3DhNCx71X4n+k1f0VpxRwUPrv5WYGGrX4mWn2xXFwg6vCwkLZGvAC3Y1q5tm1vt+Chpv8Iisrts7Ot0iOQwFSFObAj8NiratNFEZjepBnLbV0OMr0=
+  - secure: f4jrquOAF5knoHluoWpixQKetITb5xQ9qDEIeCiBGABRQ55/rTSNAFKP5ctOl1i2Ma0SqHmAugEhfN3p3c8rnGkO3vu+yhPLwC3wvOvVCeZNzbTTUFHZJgpzinCq6srnyOcjQ7G8WFXgNk1aaNi2pIdgr9ViHv2ZRQnO2NByhVUQ8yfTfQEcA53z5ozw2pATIQFh2emC6BuNoY5T+YgTLR+uQ2EUdThTxBzO1q8CZ+GYk4yKhOHpCMC456+edQgi4gcbv1LIeMEfHeN0pzFTeVrfLkUy7b2zH6UNoy5AjWJJioYai3t0rzTwvWzudz1lBnunPi0oA0b1q1ZUiy7TrYeezp1gGPFOg+MB3ftUOlYI/RKCgkeJZT1IrUJN2NnkDWqVtlgZGQcN86Am5ZShpTzt6xrLwceLSdFXFW4phCViVcg13yFcYF/iW4UmQMvEwJBczkELt0YRZCbdHhRHB0phSC7RUQuudKLuliLB3C4oIrR5LwE6PAF52hDRW1Z1/uRFjolNimbZHSDbkLddRbc/Dx5F5DLe8Nrvya5OqjlBmIpi94mMhViZZ/lu9wJ1R2LGXMMzRTj9ZKxuMlPq+WeWkVS1qi9SI23mmkc+HKAOi/5p/YQpX28QyrAHRgDzo/3iwfAcLw9EYJSpWKbXag8weu35s7ysGq1AGY0r1sc=
 matrix:
   fast_finish: true
   allow_failures:
   - python: nightly
-
 jobs:
   include:
   - stage: build docker image
-    env:
-    - IMAGE_NAME=nikmang/senti-bot
-    - VERSION=0.0.1
     script:
     - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
-    - docker-compose build -t $IMAGE_NAME
-    - docker push $IMAGE_NAME:0.0.1
+    - docker build -t $IMAGE_NAME
+    - docker push $IMAGE_NAME:$VERSION
     - docker images
 install:
 - pip install -r requirements.txt
