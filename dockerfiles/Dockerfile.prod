@@ -5,7 +5,7 @@ FROM python:3.6.8-stretch
 LABEL mainainer="ngilevskiy@gmail.com"
 
 # copy everything to work directory
-COPY . /senti-bot
+COPY ../ /senti-bot
 WORKDIR /senti-bot
 
 # install all reqs for script
