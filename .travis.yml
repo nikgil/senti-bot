@@ -1,24 +1,37 @@
 os: linux
 dist: xenial
 language: python
-
+python:
+- '3.5'
+- '3.6'
+- 3.6-dev
+- 3.7-dev
+- nightly
+env:
+  global:
+  - IMAGE_NAME=nikmang/senti-bot
+  - VERSION=latest
+  - secure: MdffCs+ldDgycmHJ5KXjAksjWwCY6VrX20qoYAr0TQ0iQrCn+clv6u+jCZhGe37RDr1ITHHfePu/PuBFiY3YzNlAtBG6OD7mIgSaRbv6BJwYVqqEuqKZu8TYnMEgmbCS6+dwjVx2T0+EJdS9Y4Mni2R/OcecgRRPnXdFe/Puq/WrEjgo88yErpkTeNgSIzE290kheY6up4z8L9bewMCSrlIqIrW01HPSrIpFtAMBqnL1wKg0m0yL9ssDRz0ItsYD0D7B+sRllJdsnsQQsBVlBFQ7Gz/AdXz9DZPkc02LdHuK3AWZ4OJNK4F0rkma024Eq7K18nW3Mbyun3Jc2oROoM2fps75rm4y78ibSSygr0gETk6yOoNf66phUWap4SQXUC2cKPvl8cRk+A2KyJYCBAdeT1o6xm3PjBZyx4NFNkUbH8xR12tSffAop7osHfqVmP6buF4O5+5nWB2xCfRb5TMtUhIyWyB7+Yldt95rlTRZzO8ATmRftm+Otjy053KKezzzFdbWw7DCDPiG/apGMlNIlcfJexukx1SjoVSIsqfWlwDvP4dCkhf5+scwAx7pNwfo7UNp5DEsPvPQsNaJwfhiamLE079LX3PUXZlruLfXQ+eedq9wsnHordI+Tc9SavXCOfMh411Fo/NHMKhAN40ca5bxzKPQ5KZBnZYKHoc=
+  - secure: HUHVOeyYcErtuEOYrStcoSjMMnB2z6Y239gq02r1hk7b5AhQC07UGkw1PzpwuPjVNHpdyrU9wuKQAIFBlX3bYF1G455i+6O2jXejmOdRLfgu3AsjE2EdWMrjiNA10570YEY/on9sxuPHMUhSvR+eg8mwYge1dCOw3O4gf1m01pKQ+o5ZTbyCSoj6RisWnTizozzaZqsqGHX8PaXb8yrNL4+/LeOsK3RTsxQxQ1Hl8rLsdB2tzSQZG2qm+r13ekeCm8MiXzD0wUSj6tCT1eDhOqQBZbPiurTgZQn2y3ZJIuUVs0ydGw09tOJW2Vi7+ETp7OJM3dKXGe3Gz2VHMvidF0Yll4AeTW2w3zKFf7zmIuPz0u2hO91jeLhGEFr3lqRZzPot6NUcEqz82pl7Zf1R1uf2xYS/4fD/7WW6tbe6+HyI4DQrl2aQ9eOLyQZPxEAFhkRtDG7No0f5wPWWpzfbaSNTqHbvPonRDRzW20WJhoDuoTuYXJqjD4eS8uLxTEpQz3I60GmWaoiRLe34BNrQ5KOVg+E4Apayauf+0mxsvJvwpHM2KkASy/DoMtnidBoCzNYh4AP+LYKL02ixyIYv5jILDHvEd4BNpOgzgdl4cFhgz2qZQCFowCHbQePumFzyPH6H3AWVS2LvPXvRmd5P/IaAu9wocQtruMTWhbB5O00=
 matrix:
-  include:
-    - python: "3.5"
-      name: "3.5 Vanilla"
-    - python: "3.6"
-      name: "3.6 Vanilla"
-    - python: "nightly"
-      name: "Nightly Test"
+  fast_finish: true
   allow_failures:
-    - python: "nightly"
-
+  - python: nightly
+jobs:
+  include:
+  - stage: build docker image
+    if: branch = master
+    script:
+    - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD"
+    - docker build -f dockerfiles/Dockerfile.prod -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME:$VERSION
+    - docker images
 install:
-  - pip install -r requirements.txt
-  - pip install pytest-cov
-
+- pip install -r requirements.txt
+- pip install pytest-cov
 script:
-  - python -m pytest --cov=./ tests/
-
+- python -m pytest --cov=./ tests/
+services:
+- docker
 after_success:
-  - codecov
+- codecov

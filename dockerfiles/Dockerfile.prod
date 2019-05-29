@@ -1,0 +1,16 @@
+# base image
+FROM python:3.6.8-stretch
+
+# gotta rep myself
+LABEL mainainer="ngilevskiy@gmail.com"
+
+# copy everything to work directory
+COPY . /senti-bot
+WORKDIR /senti-bot
+
+# install all reqs for script
+RUN pip install -r requirements.txt
+RUN python pickle_files.py
+
+# Finally run the actual target command
+ENTRYPOINT ["python", "main.py"]

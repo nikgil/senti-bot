@@ -1,0 +1,6 @@
+version: "3"
+
+services:
+  senti-bot:
+    restart: always
+    build: .
